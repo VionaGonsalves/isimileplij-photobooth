@@ -40,7 +40,11 @@ function Strip({photos, onStartOver}) {
             }
 
             images.forEach((img, index) => {
-                ctx.drawImage(img, PHOTO_X, PHOTO_YS[index], PHOTO_WIDTH, PHOTO_HEIGHT);
+                const sh = img.height;
+                const sw = img.height * (PHOTO_WIDTH/PHOTO_HEIGHT);
+                const sx = (img.width - sw)/2; // TODO: handle portrait cameras
+                const sy = 0;
+                ctx.drawImage(img, sx, sy, sw, sh, PHOTO_X, PHOTO_YS[index], PHOTO_WIDTH, PHOTO_HEIGHT);
             })
 
             const dataUrl = canvas.toDataURL('image/png');
@@ -61,7 +65,7 @@ function Strip({photos, onStartOver}) {
             
         <ul>
             {photos.map((photo, index)=> 
-            <li key={index}><img src={photo} alt={`Photo ${index + 1}`} width="500"/></li>
+            <li key={index}><img src={photo} alt={`Photo ${index + 1}`} width="200"/></li>
             )}
         </ul>
         {photos.length>0 && 
@@ -69,7 +73,7 @@ function Strip({photos, onStartOver}) {
             Start Over
         </button>}
         <canvas ref={canvasRef} style={{ display: 'none' }} />
-        {photos.length === 4 && stripSrc && <img src={stripSrc} style={{ width: 200, alignItems: 'center'}} />}
+        {photos.length === 4 && stripSrc && <img src={stripSrc} style={{ width: 200 }} />}
         </>
         
     )
